@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  musicplayer:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: musicplayer-app
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    volumes:
+      # Mount logs directory for persistence
+      - ./logs:/app/logs
+      # Direct access to CasaOS music directory
+      - /DATA/Media/Music:/DATA/Media/Music:ro
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - MUSIC_PATH=/DATA/Media/Music
+      - CORS_ORIGIN=*
+      - LOG_LEVEL=info
+      - LOG_FILE=/app/logs/app.log
+    networks:
+      - musicplayer-network
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) }).on('error', () => process.exit(1))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    labels:
+      # CasaOS labels for better integration
+      - "casaos.name=Music Player"
+      - "casaos.description=Web-based music player for CasaOS"
+      - "casaos.category=Media"
+      - "casaos.port=3000"
+      - "casaos.scheme=http"
+
+networks:
+  musicplayer-network:
+    driver: bridge
+
+volumes:
+  logs:
+    driver: local
