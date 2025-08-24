@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Player - CasaOS</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎵 Music Player</h1>
+            <p>CasaOS Music Streaming</p>
+        </header>
+
+        <main>
+            <!-- Player Controls -->
+            <div class="player-section">
+                <div class="track-info">
+                    <h2 id="track-title">No track selected</h2>
+                    <p id="track-artist">Select a song from the playlist</p>
+                </div>
+
+                <div class="controls">
+                    <button id="prev-btn" class="control-btn" disabled>
+                        <span>⏮️</span>
+                    </button>
+                    <button id="play-pause-btn" class="control-btn play-btn" disabled>
+                        <span>▶️</span>
+                    </button>
+                    <button id="next-btn" class="control-btn" disabled>
+                        <span>⏭️</span>
+                    </button>
+                </div>
+
+                <div class="progress-section">
+                    <div class="time-display">
+                        <span id="current-time">0:00</span>
+                        <span id="duration">0:00</span>
+                    </div>
+                    <div class="progress-bar">
+                        <input type="range" id="progress-slider" min="0" max="100" value="0" disabled>
+                    </div>
+                </div>
+
+                <div class="volume-section">
+                    <span class="volume-icon">🔊</span>
+                    <input type="range" id="volume-slider" min="0" max="100" value="70">
+                    <span id="volume-display">70%</span>
+                </div>
+            </div>
+
+            <!-- Playlist Section -->
+            <div class="playlist-section">
+                <h3>Playlist</h3>
+                <div id="playlist-loading" class="loading">
+                    <p>Loading playlist...</p>
+                </div>
+                <div id="playlist-empty" class="empty-state" style="display: none;">
+                    <p>No music files found</p>
+                    <small>Make sure your music files are in the correct directory</small>
+                </div>
+                <ul id="playlist" class="playlist"></ul>
+            </div>
+        </main>
+    </div>
+
+    <!-- Toast notifications -->
+    <div id="toast" class="toast"></div>
+
+    <!-- Audio element -->
+    <audio id="audio-player" preload="metadata"></audio>
+
+    <script src="js/player.js"></script>
+</body>
+</html>
